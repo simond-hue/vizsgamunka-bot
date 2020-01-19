@@ -1,0 +1,54 @@
+{
+  "name": "NewHopeBot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simond-hue/new-hope-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simond-hue/new-hope-bot/issues"
+  },
+  "homepage": "https://github.com/simond-hue/new-hope-bot#readme",
+  "dependencies": {
+    "assert-diff": "^2.0.3",
+    "decompress": "^4.2.0",
+    "decompress-tarxz": "^3.0.0",
+    "discord.js": "^11.5.1",
+    "ffbinaries": "^1.1.4",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-static": "^3.0.0",
+    "html-entities": "^1.2.1",
+    "https-proxy-agent": "^4.0.0",
+    "iconv": "^2.3.5",
+    "latest": "github:discordjs/discord.js",
+    "libsodium-wrappers": "^0.7.6",
+    "lzma-native": "^6.0.0",
+    "m3u8stream": "^0.6.4",
+    "miniget": "^1.6.1",
+    "mocha": "^6.2.2",
+    "muk-prop": "^1.2.1",
+    "nyc": "^15.0.0",
+    "opusscript": "0.0.7",
+    "querystring": "^0.2.0",
+    "request": "^2.88.0",
+    "ripple-node": "^1.0.5",
+    "sax": "^1.2.4",
+    "sinon": "^8.0.1",
+    "url": "^0.11.0",
+    "util": "^0.12.1",
+    "uws": "^100.0.1",
+    "ytdl-core": "^1.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^13.1.0",
+    "nodemon": "^1.19.2"
+  }
+}
