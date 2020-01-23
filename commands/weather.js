@@ -102,7 +102,7 @@ module.exports.run = async (bot, message, args) => {
                 let napnyugta = new Date((data.sys.sunset+data.timezone)*1000);
                 let napnyugtaString = stringify(napnyugta);
                 
-                time = await r(`http://api.timezonedb.com/v2.1/list-time-zone?key=EJ74UWG75OWQ&format=json&country=${data.sys.country}`);
+                time = await r(`http://api.timezonedb.com/v2.1/list-time-zone?key=${botconfig.timezoneAPIKEY}&format=json&country=${data.sys.country}`);
                 timedata = JSON.parse(time.body);
 
                 GMTOffset = data.timezone;
