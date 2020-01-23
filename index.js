@@ -112,6 +112,6 @@ bot.on("ready", async() => {
     console.log(bot.commands);
 });
 
-bot.login(/*process.env.token*/"");
+bot.login(botconfig.token);
 
 exports.servers = servers;

@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const request = require('request');
+const botconfig = require("../botconfig.json");
 
 
 function r(url){
@@ -91,7 +92,7 @@ module.exports.run = async (bot, message, args) => {
             telepules += message.content.split(' ')[i]+" ";
         }
     }
-    request(`https://api.openweathermap.org/data/2.5/weather?q=${makeAsciiCompatible(telepules)}&units=metric&appid=15e2356fca76b640e9fb6d2fcc1ad012`, 
+    request(`https://api.openweathermap.org/data/2.5/weather?q=${makeAsciiCompatible(telepules)}&units=metric&appid=${botconfig.weatherAPIKEY}`, 
         async(error, response, body) => {  
             if(response.statusCode === 200){
                 data = JSON.parse(response.body);
