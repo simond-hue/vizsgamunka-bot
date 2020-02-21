@@ -34,13 +34,14 @@ module.exports.run = async (bot, message, args) => {
                     queueCanBeCalled: true,
                     looped: false,
                     shuffled: false,
-                    shuffleind: 0
+                    shuffleind: 0,
+                    botInterval: null
                 };
             }
             this.botok(message,servers);
             setTimeout(() => {
                 if(servers[message.guild.id])
-                    if(!servers[message.guild.id].voltLejatszvaZene && message.guild.voiceConnection) return bot.commands.get("fuckoff").run(bot,message,args);
+                    if(!servers[message.guild.id].voltLejatszvaZene && message.guild.voiceConnection) bot.commands.get("fuckoff").run(bot,message,args);
             }, 300000);
         }
     }
@@ -65,7 +66,7 @@ function bots(message,servers){
 
 module.exports.botok = async(message,servers)=>{
     var botok = false;
-    setTimeout(async() => {
+    setInterval(async() => {
         if(!servers[message.guild.id]) return;
         if(servers[message.guild.id]){
             botok = bots(message,servers);       
@@ -87,6 +88,7 @@ module.exports.botok = async(message,servers)=>{
         } 
     }, 600000)
 }
+
 module.exports.help = {
     name: "summon",
     type: "music",

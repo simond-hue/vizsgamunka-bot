@@ -20,11 +20,9 @@ module.exports.run = async (bot, message, args) => {
     if(!server.queue[0]) return message.channel.send(new Discord.RichEmbed()
                                                         .setColor("#DABC12")
                                                         .setTitle("Üres a lejátszási lista!"));
-    if(server.summonedChannel !== message.member.voiceChannel.id && message.member.voiceChannel.members.get('666067588039704599'))
-        if(message.member.voiceChannel.id === message.member.voiceChannel.members.get('666067588039704599').voiceChannelID){
-            servers[message.guild.id].summonedChannel = message.member.voiceChannel.id;
-            servers[message.guild.id].summonedVoiceConnection = message.member.voiceConnection;
-        }
+    if(server.summonedChannel !== message.member.voiceChannel.id && message.member.voiceChannel.members.get('626527448858886184'))
+        if(message.member.voiceChannel.id === message.member.voiceChannel.members.get('626527448858886184').voiceChannelID)
+            server.summonedChannel = message.member.voiceChannel.id;
     if(server.summonedChannel === message.member.voiceChannel.id){
         if(server.queue[0]){
             for(var i = 1; i < server.queue.length; i++){
@@ -52,5 +50,5 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
     name: "randomize",
     type: "music",
-    alias: ["r", "rnd", "shuff"]
+    alias: ["rnd"]
 }

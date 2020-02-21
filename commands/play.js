@@ -14,6 +14,10 @@ const agent = new Agent(proxy);
 // TypeError: Cannot read property 'information' of undefined
 // amikor túl gyorsan disconnecteled a botot
 
+module.exports.exportedPlay = async(message,bot,args)=>{
+    play(message,bot,args);
+}
+
 var functionInPlay = async function (msg,bt,ar){
     server = index.servers[msg.guild.id];
     if(!server) return;
@@ -50,7 +54,6 @@ var functionInPlay = async function (msg,bt,ar){
         if(server.information[server.shuffleind].player_response.videoDetails.isLiveContent && server.information[server.shuffleind].player_response.videoDetails.isLive){
             await new Promise((resolve, reject)=>{
                 const format = ytdl.chooseFormat(server.information[server.shuffleind].formats, { quality: [128,127,120,93] , highWaterMark: 1<<25});
-                console.log(format);
                 stream = ytdl.downloadFromInfo(server.information[server.shuffleind], format);
                 resolve(stream);
             }).then(async()=>{
@@ -68,7 +71,7 @@ var functionInPlay = async function (msg,bt,ar){
                         )
                         .setThumbnail(server.information[server.shuffleind].player_response.videoDetails.thumbnail.thumbnails[0].url)
                         .setAuthor(
-                            "New Hope Bot",
+                            "Vizsgamunka Bot",
                             "https://cdn.discordapp.com/avatars/666067588039704599/8487d8b9ed665f8398151fe3c187f976.png"
                         ));
                 }
@@ -144,7 +147,7 @@ var functionInPlay = async function (msg,bt,ar){
 
 var play = async function (msg, bt, ar){
     server = index.servers[msg.guild.id];
-    server.voltLejatszvaZene = true;
+    if(!server.voltLejatszvaZene) server.voltLejatszvaZene = true;
     if(server.information[server.shuffleind] === null && server.queue[server.shuffleind] && msg.guild.voiceConnection){
         await new Promise((resolve, reject)=>{
             ytdl.getInfo(server.queue[server.shuffleind], async(err,info)=>{
@@ -246,10 +249,8 @@ module.exports.run = async (bot, message, args) => {
                 if(!servers[message.guild.id].summonedChannel || !message.guild.voiceConnection) servers[message.guild.id].summonedChannel = message.member.voiceChannel.id;
 
                 if(servers[message.guild.id].summonedChannel !== message.member.voiceChannel.id && message.member.voiceChannel.members.get('666067588039704599'))
-                    if(message.member.voiceChannel.id === message.member.voiceChannel.members.get('666067588039704599').voiceChannelID){
+                    if(message.member.voiceChannel.id === message.member.voiceChannel.members.get('666067588039704599').voiceChannelID)
                         servers[message.guild.id].summonedChannel = message.member.voiceChannel.id;
-                        servers[message.guild.id].summonedVoiceConnection = message.member.voiceConnection;
-                    }      
             }
         }
         else{
@@ -268,7 +269,8 @@ module.exports.run = async (bot, message, args) => {
                     queueCanBeCalled: true,
                     looped: false,
                     shuffled: false,
-                    shuffleind: 0
+                    shuffleind: 0,
+                    botInterval: null
                 };
             }
         }
@@ -359,6 +361,7 @@ module.exports.run = async (bot, message, args) => {
                         if(!response) message.channel.send(new Discord.RichEmbed()
                                             .setColor('#DABC12')
                                             .setTitle('Váratlan hiba történt!'));
+                        console.log(response.statusCode);
                         if(response.statusCode === 200){
                             let data = JSON.parse(response.body);
                             let count = Object.keys(data.items).length;
@@ -366,7 +369,7 @@ module.exports.run = async (bot, message, args) => {
                                 if(!message.guild.voiceConnection) await bot.commands.get("summon").run(bot,message,args).then(()=>{
                                     message.guild.voiceConnection.player.streamingData.pausedTime = 0;
                                 });
-                                let vidID = data.items[0].id.videoId;
+                                let vidID = data.items[servers[message.guild.id].shuffleind].id.videoId;
                                 index = require("../index.js");
                                 servers = index.servers;
                                 servers[message.guild.id].queue.push(`https://www.youtube.com/watch?v=${vidID}`);

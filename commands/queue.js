@@ -94,7 +94,7 @@ async function listing(server, message){
     .setTitle("Lejátszási lista")
     .setFooter(server.page+1+"/"+Math.ceil(server.queue.length/10))
     .setAuthor(
-        "New Hope Bot",
+        "Vizsgamunka Bot",
         "https://cdn.discordapp.com/avatars/666067588039704599/8487d8b9ed665f8398151fe3c187f976.png"
     )
     .setThumbnail(message.guild.iconURL);
