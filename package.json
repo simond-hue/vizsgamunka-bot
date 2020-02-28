@@ -31,7 +31,7 @@
     "latest": "github:discordjs/discord.js",
     "libsodium-wrappers": "^0.7.6",
     "lzma-native": "^6.0.0",
-    "m3u8stream": "^0.6.4",
+    "m3u8stream": "^0.6.5",
     "miniget": "^1.6.1",
     "mocha": "^6.2.2",
     "muk-prop": "^1.2.1",
@@ -45,7 +45,7 @@
     "url": "^0.11.0",
     "util": "^0.12.1",
     "uws": "^100.0.1",
-    "ytdl-core": "^1.0.7"
+    "ytdl-core": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^13.1.0",
