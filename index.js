@@ -31,9 +31,6 @@ bot.on("message", async message => {
     let args = messageArray.slice(1);
     let prefix = botconfig.prefix;
     switch (message.content) {
-        case 'nigger':
-            message.channel.send('nigger');
-            break;
         case 'tsun':
             message.channel.send('É-é-ééén egyáltalán nem akarom, hogy rám figyelj vagy valami ilyesmi BAKA~!! >///<');
             break;
