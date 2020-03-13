@@ -15,10 +15,12 @@ module.exports.run = async (bot, message, args) => {
     if(server.queue.length === 1) return message.channel.send(new Discord.RichEmbed()
                                             .setColor("#DABC12")
                                             .setTitle("Inkább használd a skip parancsot!"));
-    currentElement = server.queue[0];
-    currentInfo = server.information[0];
-    currentRequestedBy = server.requestedBy[0];
-    currentProfPic = server.requestedByProfPic[0];
+    currentElement = server.queue[server.shuffleind];
+    currentInfo = server.information[server.shuffleind];
+    currentRequestedBy = server.requestedBy[server.shuffleind];
+    currentProfPic = server.requestedByProfPic[server.shuffleind];
+    server.shuffled = false;
+    server.shuffleind = 0;
 
     server.queue = [];
     server.information = [];
