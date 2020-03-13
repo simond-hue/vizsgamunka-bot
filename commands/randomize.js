@@ -35,6 +35,14 @@ module.exports.run = async (bot, message, args) => {
                 tempInfo = server.information[i];
                 server.information[i] = server.information[csereltElem];
                 server.information[csereltElem] = tempInfo;
+
+                tempProfPic = server.requestedByProfPic[i];
+                server.requestedByProfPic[i] = server.requestedByProfPic[csereltElem];
+                server.requestedByProfPic[csereltElem] = tempProfPic;
+
+                tempReqBy = server.requestedBy[i];
+                server.requestedBy[i] = server.requestedBy[csereltElem];
+                server.requestedBy[csereltElem] = tempReqBy;
             }
         }
     }

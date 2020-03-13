@@ -123,7 +123,7 @@ module.exports.run = async (bot, message, args) => {
                                         message.channel.send(embed)
                                         .then(async(embed) => {
                                             if(embed) await embed.delete(5000);
-                                            if(mesasge) message.delete();
+                                            if(message) message.delete();
                                         });
                                     }
                             });

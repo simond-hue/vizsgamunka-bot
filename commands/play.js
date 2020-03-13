@@ -51,6 +51,10 @@ var functionInPlay = async function (msg,bt,ar){
     }
     else{
         var stream;
+        if(server.information[server.shuffleind] === null){
+            await msg.channel.send(new Discord.RichEmbed().setColor("#DABC12").setTitle("A videó nem elérhető!"));
+            server.dispatcher.end();
+        }
         if(server.information[server.shuffleind].player_response.videoDetails.isLiveContent && server.information[server.shuffleind].player_response.videoDetails.isLive){
             await new Promise((resolve, reject)=>{
                 const format = ytdl.chooseFormat(server.information[server.shuffleind].formats, { quality: [128,127,120,93] , highWaterMark: 1<<25});
@@ -107,8 +111,7 @@ var functionInPlay = async function (msg,bt,ar){
             msg.guild.voiceConnection.player.streamingData.pausedTime = 0;
             clearTimeout(server.playTimeout);
         });
-        server.dispatcher.on("end", (reason)=>{
-            console.log(reason);
+        server.dispatcher.on("end", ()=>{
             server.dispatcher.end();
             setTimeout(() => {
             if(msg.guild.voiceConnection && server){
