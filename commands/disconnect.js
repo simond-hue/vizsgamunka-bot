@@ -36,7 +36,7 @@ module.exports.run = async (bot, message, args) => {
     }
 }
 module.exports.help = {
-    name: "fuckoff",
+    name: "disconnect",
     type: "music",
-    alias: ["disconnect", "dc"]
+    alias: ["dc"]
 }
