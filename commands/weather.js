@@ -114,7 +114,7 @@ module.exports.run = async (bot, message, args) => {
                 currentTime = new Date(timedata.zones[i].timestamp*1000);
                 currentTimeString = stringify(currentTime);
 
-                localTime = await r(`http://api.timezonedb.com/v2.1/list-time-zone?key=EJ74UWG75OWQ&format=json&country=HU`);
+                localTime = await r(`http://api.timezonedb.com/v2.1/list-time-zone?key=${botconfig.timezoneAPIKEY}&format=json&country=HU`);
                 localTimeData = JSON.parse(localTime.body);
 
                 localTimeSet = new Date(localTimeData.zones[0].timestamp*1000);

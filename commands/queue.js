@@ -124,7 +124,7 @@ async function listing(server, message){
             }
         }
         for(var i = server.page*10; i < fromto; i++){
-            if(server.information[i]){
+            if(server.information[i] || server.information[i] !== null){
                 var length = timeNormalization(server.information[i].length_seconds);
                 queueEmbed.addField(`${(i+1)}.`, `[${server.information[i].title}](${server.queue[i]}) Hossz: ${length}`);
             }
