@@ -295,7 +295,7 @@ if(!message.guild.me.hasPermission('CONNECT')) return message.channel.send(new D
                 } 
             }
             else if(link.startsWith("https://www.youtube.com/watch?") || link.startsWith('https://youtu.be/')){ //HA LINKET AD MEG A USER
-                if(message.content.split(' ').length > 2){
+                if(message.content.split(' ').length > 2 || message.content.split('\n').length > 1){
                     return message.channel.send(new Discord.RichEmbed()
                         .setColor("#DABC12")
                         .setTitle("Az argumentum több elemet tartalmaz!"));
