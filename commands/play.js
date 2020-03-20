@@ -234,7 +234,8 @@ async function afterPromise(msg,bt,ar,lnk){
 }
 
 module.exports.run = async (bot, message, args) => {
-    if(!message.guild.me.hasPermission('CONNECT')) return message.channel.send(new Discord.RichEmbed()
+    try{
+if(!message.guild.me.hasPermission('CONNECT')) return message.channel.send(new Discord.RichEmbed()
                                                             .setColor("#DABC12")
                                                             .setTitle("Nincs jogom csatlakozni a voice-hoz!"));
     if(message.content.split(' ').length==1){
@@ -440,6 +441,10 @@ module.exports.run = async (bot, message, args) => {
                 .setTitle("Nem vagyunk ugyanabban a szobában!"));
         }
         
+    }
+}
+    catch(e){
+        console.log(e)
     }
 }
 module.exports.help = {

@@ -141,24 +141,28 @@ async function listing(server, message){
 }
 
 module.exports.run = async (bot, message, args) =>{
-    server = index.servers[message.guild.id];
-    if(!message.guild.voiceConnection)                      return message.channel.send(new Discord.RichEmbed()
-                                                                .setColor("#DABC12")
-                                                                .setTitle('Nem vagyok voice channelen!'));
-    if(!server.queue[0] && message.guild.voiceConnection)   return message.channel.send(new Discord.RichEmbed()
-                                                                .setColor("#DABC12")
-                                                                .setTitle('Üres a lejátszási lista!'));
-    if(!message.guild.me.hasPermission("MANAGE_MESSAGES"))  return message.channel.send(new Discord.RichEmbed()
-                                                                .setColor("#DABC12")
-                                                                .setTitle('Szükségem van üzenet kezelési jogra!'));
-    if(!server.queueCanBeCalled) return message.channel.send(new Discord.RichEmbed()
-                                    .setColor("#DABC12")
-                                    .setTitle('A lejátszási lista még töltődik!'));
-    if(server.shuffled) server.page = Math.floor(server.shuffleind/10);
-    else server.page = 0;
-    if(server.lastMessage && server.reactionCollectorOnLastMessage) server.lastMessage.clearReactions();
-    listingCommand(server,message);
-
+    try{
+        server = index.servers[message.guild.id];
+        if(!message.guild.voiceConnection)                      return message.channel.send(new Discord.RichEmbed()
+                                                                    .setColor("#DABC12")
+                                                                    .setTitle('Nem vagyok voice channelen!'));
+        if(!server.queue[0] && message.guild.voiceConnection)   return message.channel.send(new Discord.RichEmbed()
+                                                                    .setColor("#DABC12")
+                                                                    .setTitle('Üres a lejátszási lista!'));
+        if(!message.guild.me.hasPermission("MANAGE_MESSAGES"))  return message.channel.send(new Discord.RichEmbed()
+                                                                    .setColor("#DABC12")
+                                                                    .setTitle('Szükségem van üzenet kezelési jogra!'));
+        if(!server.queueCanBeCalled) return message.channel.send(new Discord.RichEmbed()
+                                        .setColor("#DABC12")
+                                        .setTitle('A lejátszási lista még töltődik!'));
+        if(server.shuffled) server.page = Math.floor(server.shuffleind/10);
+        else server.page = 0;
+        if(server.lastMessage && server.reactionCollectorOnLastMessage) server.lastMessage.clearReactions();
+        listingCommand(server,message);
+    }
+    catch(e){
+        console.log(e)
+    }
 }
 module.exports.help = {
     name: "queue",

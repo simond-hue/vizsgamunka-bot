@@ -71,29 +71,34 @@ async function search(keyword){
 }
 
 module.exports.run = async(bot, message, args)=>{
-    // kivételek
-    if(!message.member.voiceChannel) return Embed(message, "Voice channelben kell lenned, hogy tudj zenére keresni!"); // user voice connection check
-    if(!message.guild.me.hasPermission("CONNECT")) return Embed(message, "Nincs jogom csatlakozni a voice-hoz!"); // permission check
-    // ha a bot nincs fent
-    if(!message.guild.voiceConnection) await bot.commands.get("summon").run(bot,message,args);
-    server = index.servers[message.guild.id];
-    global.server = server;
-    global.message = message;
-    global.bot = bot;
-    global.args = args;
-    global.userid = global.message.author.id;
-    if(server.summonedChannel !== message.member.voiceChannel.id && message.member.voiceChannel.members.get('626527448858886184'))
-        if(message.member.voiceChannel.id === message.member.voiceChannel.members.get('626527448858886184').voiceChannelID)
-            server.summonedChannel = message.member.voiceChannel.id; 
-    if(server.summonedChannel !== message.member.voiceChannel.id) return Embed(message, "Nem vagyunk ugyanabban a szobában!"); // room check
-    if(message.content.split(" ").length === 1) return Embed(message, "Üres argumentum!"); // üres string-et adott-e meg a user
+    try{
+        // kivételek
+        if(!message.member.voiceChannel) return Embed(message, "Voice channelben kell lenned, hogy tudj zenére keresni!"); // user voice connection check
+        if(!message.guild.me.hasPermission("CONNECT")) return Embed(message, "Nincs jogom csatlakozni a voice-hoz!"); // permission check
+        // ha a bot nincs fent
+        if(!message.guild.voiceConnection) await bot.commands.get("summon").run(bot,message,args);
+        server = index.servers[message.guild.id];
+        global.server = server;
+        global.message = message;
+        global.bot = bot;
+        global.args = args;
+        global.userid = global.message.author.id;
+        if(server.summonedChannel !== message.member.voiceChannel.id && message.member.voiceChannel.members.get('626527448858886184'))
+            if(message.member.voiceChannel.id === message.member.voiceChannel.members.get('626527448858886184').voiceChannelID)
+                server.summonedChannel = message.member.voiceChannel.id; 
+        if(server.summonedChannel !== message.member.voiceChannel.id) return Embed(message, "Nem vagyunk ugyanabban a szobában!"); // room check
+        if(message.content.split(" ").length === 1) return Embed(message, "Üres argumentum!"); // üres string-et adott-e meg a user
 
-    // keyword meghatározása
-    argument = [];
-    for(var i = 1; i < message.content.split(" ").length; i++){
-        argument.push(message.content.split(" ")[i]);
+        // keyword meghatározása
+        argument = [];
+        for(var i = 1; i < message.content.split(" ").length; i++){
+            argument.push(message.content.split(" ")[i]);
+        }
+        await search(encodeURIComponent(argument.join("+")), message, bot, args, server);
     }
-    await search(encodeURIComponent(argument.join("+")), message, bot, args, server);
+    catch(e){
+        console.log(e)
+    }
 }
 
 module.exports.help = {

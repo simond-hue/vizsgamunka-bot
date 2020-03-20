@@ -60,11 +60,16 @@ function createEmbed(server){
 }
 
 module.exports.run = async (bot, message, args) => {
-    if(!message.guild.voiceConnection) return error(message,'Nem vagyok voice channelen!'); // Ha a bot nincs a voice-on
-    server = index.servers[message.guild.id]; // current szerver
-    if(!server.dispatcher) return error(message,'Nincs zene a lejátszóban!') // üres a lejátszási lista 
-    embed = createEmbed(server);
-    return await message.channel.send(embed);
+    try{
+        if(!message.guild.voiceConnection) return error(message,'Nem vagyok voice channelen!'); // Ha a bot nincs a voice-on
+        server = index.servers[message.guild.id]; // current szerver
+        if(!server.dispatcher) return error(message,'Nincs zene a lejátszóban!') // üres a lejátszási lista 
+        embed = createEmbed(server);
+        return await message.channel.send(embed);
+    }
+    catch(e){
+        console.log(e)
+    }
 }
 module.exports.help = {
     name: "nowplaying",

@@ -3,47 +3,52 @@ const fs = require('fs');
 var index = require("../index.js");
 
 module.exports.run = async (bot, message, args) => {
-    if(!message.member.voiceChannel){
-        return message.channel.send(new Discord.RichEmbed()
-            .setColor("#DABC12")
-            .setTitle("Voice channelben kell lenned, hogy meg tudj idézni!"));
-    }
-    else{
-        if(message.guild.voiceConnection){
+    try{
+        if(!message.member.voiceChannel){
             return message.channel.send(new Discord.RichEmbed()
-                .setTitle("Már bent vagyok a voice channelen!")
-                .setColor("#DABC12"));
+                .setColor("#DABC12")
+                .setTitle("Voice channelben kell lenned, hogy meg tudj idézni!"));
         }
         else{
-            voice = message.member.voiceChannel;
-            connection = message.guild.voiceConnection;
-            await message.member.voiceChannel.join();
-            servers = index.servers;
-            if(!servers[message.guild.id]){
-                servers[message.guild.id] = {
-                    queue: [],
-                    information: [],
-                    requestedBy: [],
-                    requestedByProfPic: [],
-                    skips: 0,
-                    skippedBy: [],
-                    summonedChannel: message.member.voiceChannel.id,
-                    summonedVoiceConnection: message.guild.voiceConnection,
-                    voltLejatszvaZene: false,
-                    page: 0,
-                    queueCanBeCalled: true,
-                    looped: false,
-                    shuffled: false,
-                    shuffleind: 0,
-                    botInterval: null
-                };
+            if(message.guild.voiceConnection){
+                return message.channel.send(new Discord.RichEmbed()
+                    .setTitle("Már bent vagyok a voice channelen!")
+                    .setColor("#DABC12"));
             }
-            this.botok(message,servers);
-            setTimeout(() => {
-                if(servers[message.guild.id])
-                    if(!servers[message.guild.id].voltLejatszvaZene && message.guild.voiceConnection) bot.commands.get("fuckoff").run(bot,message,args);
-            }, 300000);
+            else{
+                voice = message.member.voiceChannel;
+                connection = message.guild.voiceConnection;
+                await message.member.voiceChannel.join();
+                servers = index.servers;
+                if(!servers[message.guild.id]){
+                    servers[message.guild.id] = {
+                        queue: [],
+                        information: [],
+                        requestedBy: [],
+                        requestedByProfPic: [],
+                        skips: 0,
+                        skippedBy: [],
+                        summonedChannel: message.member.voiceChannel.id,
+                        summonedVoiceConnection: message.guild.voiceConnection,
+                        voltLejatszvaZene: false,
+                        page: 0,
+                        queueCanBeCalled: true,
+                        looped: false,
+                        shuffled: false,
+                        shuffleind: 0,
+                        botInterval: null
+                    };
+                }
+                this.botok(message,servers);
+                setTimeout(() => {
+                    if(servers[message.guild.id])
+                        if(!servers[message.guild.id].voltLejatszvaZene && message.guild.voiceConnection) bot.commands.get("fuckoff").run(bot,message,args);
+                }, 300000);
+            }
         }
+    }
+    catch(e){
+        console.log(e)
     }
 }
 

@@ -82,72 +82,76 @@ function makeUpperCase(input){
 }
 
 module.exports.run = async (bot, message, args) => {
-    let telepules = "";
-    let msg = "";
-    if(message.content.split(' ').length===1){
-        telepules = 'Budapest';
-    }
-    else{
-        for(let i = 1; i < message.content.split(' ').length; i++){
-            telepules += message.content.split(' ')[i]+" ";
+    try{
+        let telepules = "";
+        let msg = "";
+        if(message.content.split(' ').length===1){
+            telepules = 'Budapest';
         }
-    }
-    request(`https://api.openweathermap.org/data/2.5/weather?q=${makeAsciiCompatible(telepules)}&units=metric&appid=${botconfig.weatherAPIKEY}`, 
-        async(error, response, body) => {  
-            if(response.statusCode === 200){
-                data = JSON.parse(response.body);
-                let napkelte = new Date((data.sys.sunrise+data.timezone)*1000);
-                let napkelteString = stringify(napkelte);
+        else{
+            for(let i = 1; i < message.content.split(' ').length; i++){
+                telepules += message.content.split(' ')[i]+" ";
+            }
+        }
+        request(`https://api.openweathermap.org/data/2.5/weather?q=${makeAsciiCompatible(telepules)}&units=metric&appid=${botconfig.weatherAPIKEY}`, 
+            async(error, response, body) => {  
+                if(response.statusCode === 200){
+                    data = JSON.parse(response.body);
+                    let napkelte = new Date((data.sys.sunrise+data.timezone)*1000);
+                    let napkelteString = stringify(napkelte);
 
-                let napnyugta = new Date((data.sys.sunset+data.timezone)*1000);
-                let napnyugtaString = stringify(napnyugta);
-                
-                time = await r(`http://api.timezonedb.com/v2.1/list-time-zone?key=${botconfig.timezoneAPIKEY}&format=json&country=${data.sys.country}`);
-                timedata = JSON.parse(time.body);
+                    let napnyugta = new Date((data.sys.sunset+data.timezone)*1000);
+                    let napnyugtaString = stringify(napnyugta);
+                    
+                    time = await r(`http://api.timezonedb.com/v2.1/list-time-zone?key=${botconfig.timezoneAPIKEY}&format=json&country=${data.sys.country}`);
+                    timedata = JSON.parse(time.body);
 
-                GMTOffset = data.timezone;
-                let i = 0;
-                while(i < timedata.zones.length){
-                    if(timedata.zones[i].gmtOffset === GMTOffset) break;
-                    i++;
+                    GMTOffset = data.timezone;
+                    let i = 0;
+                    while(i < timedata.zones.length){
+                        if(timedata.zones[i].gmtOffset === GMTOffset) break;
+                        i++;
+                    }
+                    currentTime = new Date(timedata.zones[i].timestamp*1000);
+                    currentTimeString = stringify(currentTime);
+
+                    localTime = await r(`http://api.timezonedb.com/v2.1/list-time-zone?key=${botconfig.timezoneAPIKEY}&format=json&country=HU`);
+                    localTimeData = JSON.parse(localTime.body);
+
+                    localTimeSet = new Date(localTimeData.zones[0].timestamp*1000);
+
+                    telepules = makeUpperCase(telepules);
+
+                    message.channel.send(new Discord.RichEmbed()
+                        .setColor("#DABC12")
+                        .setTitle("Időjárás")
+                        .setThumbnail(`http://openweathermap.org/img/w/${data.weather[0].icon}.png`)
+                        .addField("🏙️ Település",`${telepules.substr(0,1).toUpperCase()+telepules.substr(1,telepules.length)}, ${data.sys.country}`)
+                        .addField("☀️ Hőm️érséklet °C/°F", `${data.main.temp} °C/${Math.round((data.main.temp * (9/5) + 32)*100)/100} °F`)
+                        .addField("🌡️ Minimum hőmérséklet °C/°F", `${data.main.temp_min} °C/${Math.round((data.main.temp_min * (9/5) + 32)*100)/100} °F`,true)
+                        .addField("🌡️ Maximum hőmérséklet °C/°F", `${data.main.temp_max} °C/${Math.round((data.main.temp_max * (9/5) + 32)*100)/100} °F`,true)
+                        .addField(`🌅 Napkelte`,`${napkelteString}`,true)
+                        .addField(`🌇 Napnyugta`,`${napnyugtaString}`,true)
+                        .addField("🕒 Jelenlegi idő", `${currentTimeString}`)
+                        .setDescription(`_Lekérdezve ekkor: ${stringify(localTimeSet)}_`));
                 }
-                currentTime = new Date(timedata.zones[i].timestamp*1000);
-                currentTimeString = stringify(currentTime);
-
-                localTime = await r(`http://api.timezonedb.com/v2.1/list-time-zone?key=${botconfig.timezoneAPIKEY}&format=json&country=HU`);
-                localTimeData = JSON.parse(localTime.body);
-
-                localTimeSet = new Date(localTimeData.zones[0].timestamp*1000);
-
-                telepules = makeUpperCase(telepules);
-
-                message.channel.send(new Discord.RichEmbed()
-                    .setColor("#DABC12")
-                    .setTitle("Időjárás")
-                    .setThumbnail(`http://openweathermap.org/img/w/${data.weather[0].icon}.png`)
-                    .addField("🏙️ Település",`${telepules.substr(0,1).toUpperCase()+telepules.substr(1,telepules.length)}, ${data.sys.country}`)
-                    .addField("☀️ Hőm️érséklet °C/°F", `${data.main.temp} °C/${Math.round((data.main.temp * (9/5) + 32)*100)/100} °F`)
-                    .addField("🌡️ Minimum hőmérséklet °C/°F", `${data.main.temp_min} °C/${Math.round((data.main.temp_min * (9/5) + 32)*100)/100} °F`,true)
-                    .addField("🌡️ Maximum hőmérséklet °C/°F", `${data.main.temp_max} °C/${Math.round((data.main.temp_max * (9/5) + 32)*100)/100} °F`,true)
-                    .addField(`🌅 Napkelte`,`${napkelteString}`,true)
-                    .addField(`🌇 Napnyugta`,`${napnyugtaString}`,true)
-                    .addField("🕒 Jelenlegi idő", `${currentTimeString}`)
-                    .setDescription(`_Lekérdezve ekkor: ${stringify(localTimeSet)}_`));
-            }
-            else if(response.statusCode === 404){
-                message.channel.send(new Discord.RichEmbed()
-                    .setColor("#DABC12")
-                    .setTitle("Időjárás")
-                    .addField("Hiba","Nem volt találat!"));
-            }
-            else{
-                message.channel.send(new Discord.RichEmbed()
-                    .setColor("#DABC12")
-                    .setTitle("Időjárás")
-                    .addField("Hiba","Hiba történt a szerverrel való kommunikációval!"));
-            }
-        });
-        
+                else if(response.statusCode === 404){
+                    message.channel.send(new Discord.RichEmbed()
+                        .setColor("#DABC12")
+                        .setTitle("Időjárás")
+                        .addField("Hiba","Nem volt találat!"));
+                }
+                else{
+                    message.channel.send(new Discord.RichEmbed()
+                        .setColor("#DABC12")
+                        .setTitle("Időjárás")
+                        .addField("Hiba","Hiba történt a szerverrel való kommunikációval!"));
+                }
+            });
+    }
+    catch(e){
+        console.log(e)
+    }
 }
 module.exports.help = {
     name: "weather",

@@ -14,29 +14,34 @@ function JSONwritefile(writeableJSON, message){
 
 
 module.exports.run = async (bot, message, args) => {
-    guildID = message.guild.id;
-    if(!savedplaylists[guildID]) return message.channel.send(new Discord.RichEmbed()
-                                        .setColor("#DABC12")
-                                        .setTitle("A szerveren nincs elmentve lejátszási lista!"));
-    if(message.content.split(' ').length === 1) return message.channel.send(new Discord.RichEmbed()
-                                                    .setColor("#DABC12")
-                                                    .setTitle("Nem adtad meg a playlist nevét!"));
-    var argumentum = message.content.split(' ');
-    if(message.content.split(' ').length > 2){
-        argumentum.shift();
-        argumentum = argumentum.join('_');
+    try{
+        guildID = message.guild.id;
+        if(!savedplaylists[guildID]) return message.channel.send(new Discord.RichEmbed()
+                                            .setColor("#DABC12")
+                                            .setTitle("A szerveren nincs elmentve lejátszási lista!"));
+        if(message.content.split(' ').length === 1) return message.channel.send(new Discord.RichEmbed()
+                                                        .setColor("#DABC12")
+                                                        .setTitle("Nem adtad meg a playlist nevét!"));
+        var argumentum = message.content.split(' ');
+        if(message.content.split(' ').length > 2){
+            argumentum.shift();
+            argumentum = argumentum.join('_');
+        }
+        else{
+            argumentum = argumentum[1];
+        }
+        writableJson = savedplaylists;
+        if(!writableJson[guildID][argumentum]){
+            return message.channel.send(new Discord.RichEmbed()
+                                            .setColor("#DABC12")
+                                            .setTitle("Nincs ilyen nevű lejátszási lista!"));
+        }
+        delete writableJson[guildID][argumentum];
+        JSONwritefile(writableJson,message);
     }
-    else{
-        argumentum = argumentum[1];
+    catch(e){ 
+        console.log(e) 
     }
-    writableJson = savedplaylists;
-    if(!writableJson[guildID][argumentum]){
-        return message.channel.send(new Discord.RichEmbed()
-                                        .setColor("#DABC12")
-                                        .setTitle("Nincs ilyen nevű lejátszási lista!"));
-    }
-    delete writableJson[guildID][argumentum];
-    JSONwritefile(writableJson,message);
 }
 
 module.exports.help = {
