@@ -19,7 +19,7 @@
   "homepage": "https://github.com/simond-hue/new-hope-bot#readme",
   "dependencies": {
     "assert-diff": "^2.0.3",
-    "decompress": "^4.2.0",
+    "decompress": "^4.2.1",
     "decompress-tarxz": "^3.0.0",
     "discord.js": "^11.5.1",
     "ffbinaries": "^1.1.4",
