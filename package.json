@@ -33,7 +33,7 @@
     "lzma-native": "^6.0.0",
     "m3u8stream": "^0.6.5",
     "miniget": "^1.6.1",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "muk-prop": "^1.2.1",
     "nyc": "^15.0.0",
     "opusscript": "0.0.7",
